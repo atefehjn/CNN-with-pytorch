@@ -6,9 +6,7 @@ from torchvision import datasets, transforms
 import time
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-def train(model,train_loader,learning_rate):
-    criterion = nn.CrossEntropyLoss()
-    optimizer = optim.Adam(model.parameters(), lr=learning_rate)
+def train(model,train_loader,learning_rate,criterion,optimizer):
     train_loss = 0.0
     total_correct=0
     model.train()
