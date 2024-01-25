@@ -5,7 +5,10 @@ from torchsummary import summary
 from torchviz import make_dot
 import random
 import numpy as np
+import torch.nn as nn
+import torch.optim as optim
 from TrainVal import train,validate
+
 # from model1 import CNN
 # from model2 import CNN
 # from model3 import CNN
@@ -31,8 +34,6 @@ train_loader = DataLoader(train_dataset, batch_size=64, shuffle=True)
 val_dataset = datasets.MNIST(root='./data', train=False, download=True, transform=transform)
 val_loader = DataLoader(val_dataset, batch_size=64, shuffle=False)
 
-criterion = nn.CrossEntropyLoss()
-optimizer = optim.Adam(model.parameters(), lr=learning_rate)
 
 model = CNN()
 model.to(device)
@@ -46,11 +47,13 @@ print(flop_count_table(flops))
 
 num_epochs = 10
 learning_rate = 0.001
+criterion = nn.CrossEntropyLoss()
+optimizer = optim.Adam(model.parameters(), lr=learning_rate)
 best_acc = 0
 for epoch in range(num_epochs):
     print(f'Epoch [{epoch + 1}/{num_epochs}]')
     train_acc , train_loss = train(model, train_loader, learning_rate,criterion,optimizer)
-    val_acc , val_loss = validate(model, val_loader,learning_rate,criterion)
+    val_acc , val_loss = validate(model, val_loader,criterion)
     if val_acc>best_acc:
        torch.save(model, 'best-model.pt')
        torch.save(model.state_dict(), 'best-model-parameters.pt')
