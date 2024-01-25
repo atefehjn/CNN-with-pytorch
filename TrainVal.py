@@ -20,17 +20,17 @@ def train(model,train_loader,learning_rate,criterion,optimizer):
           optimizer.step()
           predicted_label = torch.max(out, 1)[1]  # Use [1] to get the indices
           correct = (predicted_label == label).sum().item()
-          total = label.size(0)
+          total_correct += correct
+          total_samples += label.size(0)
           train_loss += loss.item()
     end_time = time.time()
-    accuracy = correct / total
+    accuracy = total_correct / total
     avg_train_loss = train_loss/len(train_loader)
     train_time = end_time - start_time
     print('train accuracy:',accuracy," | train loss: ", avg_train_loss, " | train time", train_time)
     return accuracy,avg_train_loss
 
-def validate(model, val_loader):
-    criterion = nn.CrossEntropyLoss()
+def validate(model, val_loader,criterion):
     val_loss = 0.0
     total_correct = 0
     total_samples = 0
