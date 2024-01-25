@@ -50,7 +50,7 @@ best_acc = 0
 for epoch in range(num_epochs):
     print(f'Epoch [{epoch + 1}/{num_epochs}]')
     train_acc , train_loss = train(model, train_loader, learning_rate,criterion,optimizer)
-    val_acc , val_loss = validate(model, val_loader,learning_rate,criterion,optimizer)
+    val_acc , val_loss = validate(model, val_loader,learning_rate,criterion)
     if val_acc>best_acc:
        torch.save(model, 'best-model.pt')
        torch.save(model.state_dict(), 'best-model-parameters.pt')
