@@ -9,6 +9,7 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 def train(model,train_loader,learning_rate,criterion,optimizer):
     train_loss = 0.0
     total_correct=0
+    total_samples = 0 
     model.train()
     start_time = time.time()
     for batch_idx, (x, label) in enumerate(train_loader):
@@ -24,7 +25,7 @@ def train(model,train_loader,learning_rate,criterion,optimizer):
           total_samples += label.size(0)
           train_loss += loss.item()
     end_time = time.time()
-    accuracy = total_correct / total
+    accuracy = total_correct / total_samples
     avg_train_loss = train_loss/len(train_loader)
     train_time = end_time - start_time
     print('train accuracy:',accuracy," | train loss: ", avg_train_loss, " | train time", train_time)
